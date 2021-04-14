@@ -38,11 +38,12 @@ It is assumed that the latter relation is entirely up to the validating Particip
 
 ### Certificate trust model
 
-HCERTs are verified using a Document Signer Certificate (DSC) that holds the public key of the document signer that issued the HCERT. A DSC MAY be self issued or signed by a Certificate Signing Certificate Authority (CSCA).
+HCERTs are verified using a Document Signer Certificate (DSC) that holds the public key of the document signer that issued the HCERT. A DSC is allways issued by a Certificate Signing Certificate Authority (CSCA).
 
-Each Participating Country is REQUIRED to provide a list of valid Document Signing Certificates (DSCs), and keep these lists current. This list is called the DSC list. All public keys within certificates present on the DSC list is considered valid for validating signatures of HCERTs from that country, regardless of other information in the certificate or whether the DSC is self signed or signed by a CSCA.
+Each Participating Country MUST provide a list of one or more CSCA certificates used to sign certificates on the country DSC list. Participating Countries and their verifiers MAY use the CSCA certificates as an instrument to validate certificates on the DSC list.
 
-Each Participating Country MAY provide a list of one or more CSCA certificates used to sign certificates on the country DSC list. Participating countries and their verifiers MAY use the CSCA certificates as an instrument to validate certificates on the DSC list but MUST NOT require a DSC to be signed by a CSCA.
+Each Participating Country is MUST provide a list of valid Document Signing Certificates (DSCs), and keep this lists current. This list is called the DSC list. All public keys within certificates present on the DSC list is considered valid for validating signatures of HCERTs from that country.
+
 
 ### Certificate profiles
 
@@ -52,19 +53,32 @@ Requirements on certificate content of DSC and CSCA certificates are defined in 
 
 ### Basic concept
 
-DSC and CSCA certificates are exchanged between each Participating Country based on information provided by the Secretariat.
-
-All trust information is provided openly and freely without restrictions. Each Participating Country downloading certificates MUST have the means to validate and authenticate downloaded certificates, but the Participating Country providing the certificates MUST NOT require authentication of the downloading client.
-
-<img width="800" src="img/fig1.png">
-
 The Secretariat maintains a list of Participating Countries and the following information for each country:
 
 - URLs to downloadable certificate sets (DSC and CSCA certificates)
-- Information about how to authenticate certificates from each Country
+- Information about how to authenticate downloaded certificates
+- A current aggregated list of CSCA certificates
+- A current aggregated list of verified DSC certificates
 
 This information can be downloaded and authenticated by other Participating Countries using the Secretariat's master URL and master key. This master key and master URL is the only information that is required to bootstrap trust in all HCERTs issued by all Participating Countries.
 
+All trust information is provided openly and freely without restrictions. Each Participating Country as well as the Secretariat service MUST provide the means to authenticate downloadable data, but MUST NOT require authentication or authorization of the downloading client.
+
+Participating Countries can choose between two different methods to obtain trusted certificates used to verify signature on HCERTs from another country as described below.
+
+#### Downloading aggregated certificates from Secretariat service
+
+<img width="700" src="img/fig2.png">
+
+In this option the Participating Country simply downloades the compiled list of DSC and optionally CSCA certificates aggregated and validated by the Secretariat. This is considered to be the default method to obtain trusted DSC for each Participating Country. As the aggregated DSC list is kept current and validated by the Secretariat service, Participating Coutries MAY choose to just download the DSC list and to consider all certificates on this list as trusted without doing explicit certificate validation against the signing CSCA.
+
+#### Bilateral download
+
+<img width="700" src="img/fig1.png">
+
+In this option the Participating Country decides to obtain from the Secretairat service the URL and authentication data used to download and authenticate certificates from other Participating Countries. As an alternative to this initial step the Participating countries MAY obtain this initial country info directly from the other Country which MAY be an option used to verify HCERT data from a country outside the list of countries covered by the Secretariat service.
+
+The Participating Countries the uses this country info data to continously aggregate trusted certificates.
 
 ### Data formats
 
@@ -93,8 +107,10 @@ The Secretariat offers information about Participating Countries via the master 
 - URL for downloading a signed set of JWKs containing CSCA certificates (Optional)
 - TLS Certificate used on the origin server of above.
 - Certificate for verifying signed JWKs (Optional)
+- Current valid list of aggregated CSCA Certificates
+- Current valid list of aggregated and validated DSC
 
-The manner in which the Secretariat obtains this information from each Participating Country is outside the scope of this specification.
+The manner in which the Secretariat bootstrap initial URL:s and certificates used to download and authenticate information from each Participating Country is outside the scope of this specification.
 
 
 ## Security considerations
@@ -108,7 +124,10 @@ In cases where data is obtained using a signed set of JWKs, verifiers MAY ignore
 
 The infrastructure specified in this specification is expected to be a temporary solution and its design is focused on allowing Participant Countries to use the system with a minimum amount of efforts and development using currently available standard tools.
 
-One important design goal is therefore to adopt a design that allows this model to be migrated into almost any future model for trust exchange. By gradually moving from self-signed certificates towards a more layered model where each DCA is signed by a national CSCA, it is possible to merge this infrastructure with existing models for trust exchange such as a fully integrated ICAO model, integration with EU trusted list or other relevant models.
+One important design goal is therefore to adopt a design that allows this model to be migrated into almost any future model for trust exchange such as
+
+- A fully integrated key exchange gateway where Participating Countries actively uploads trust information to the gateway using suitable API:s for trust management.
+- Integration with existing trust infrastructures such as the ICAO trust infrastructure for passport validation.
 
 
  ## Normative Standard Bodies
