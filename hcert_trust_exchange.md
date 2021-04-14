@@ -25,13 +25,26 @@ Versions of this specification follow [semantic versioning](semver.org) and cons
 
 In addition, there is an _edition_ version number used for publishing updates to the document itself which has no effect on the HCERT, such as correcting spelling, providing clarifications or addressing ambiguities, et cetera. Hence, the edition number is not indicated in the HCERT. The version numbers are expressed in the title page of the document using a _major.minor.edition_ format, where the three parts are separated by decimal dots.
 
+
+## Trust model
+
+The trust model is based on the ICOA MasterList concept with 1) a number of key simplifications and 2) allowing (as in the WHO proposal) for the use of a HCERT specific set of lists.
+
+There are two distint trust relations: 1) those between the countries (issuers) that is the concern of this document and 2) those between each country and the verifier applications that that country is using domestically.
+
+It is assumed that the latter relation; is entirely up to the memberstate to manage; and that there is no need for the verifier (if the country choose so) to take part in the inter-country trust management framework.
+
+So in general the countries need to have sufficient information to make their own assesment as to the veracity of the signatures of issuers of other countries. And once a country has compiled a list if issuers it is willing to trust - it can then focus on just providing an up to date excerpt to their verifier apps. 
+
 ## Certificate trust model
 
-HCERTs are verified using a Document Signer Certificate (DSC) that holds the public key of the document signer that issued the HCERT. A DSC MAY be self issued or signed by a Certificate Signing Certificate Authority (CSCA).
+HCERTs are verified using a Document Signer Certificate (DSC) that holds the public key of the document signer that issued the HCERT. A DSC MAY be self issued or signed by a Certificate Signing Certificate Authority (CSCA). If the DSC is self issued it MUST also (considered to) be a CSCA Certificate.
 
-Each Participating Country is REQUIRED to provide a list of valid Document Signing Certificates (DSCs), and keep these lists current. This list is called the DSC list. All public keys within certificates present on the DSC list is considered valid for validating signatures of HCERTs from that country, regardless of other information in the certificate or whether the DSC is self signed or signed by a CSCA.
+Each Participating Country is REQUIRED to provide a list of valid Document Signing Certificates (DSCs), and keep these lists current. This list is called the DSC list. All public keys within certificates present on the DSC list is considered valid for validating signatures of HCERTs from that country, regardless of other information in the certificate.
 
-Each Participating Country MAY provide a list of one or more CSCA certificates used to sign certificates on the country DSC list. Participating countries and their verifiers MAY use the CSCA certificates as an instrument to validate certificates on the DSC list but MUST NOT require a DSC to be signed by a CSCA.
+Each Participating Country MUST provide a list of one or more CSCA certificates used to sign certificates on the country DSC list. Participating countries and their verifiers MUST use the CSCA certificates as an instrument to validate certificates. This also applies in the case of a self issued DSC - as the latter is also submitted as a CSCA in that case. I.e. in the simplest case - the country creates one CSCA/DSC certificatre and simply submits that as bost a DSC and CSCA.
+
+Any CSCA MUST have a validity of at least 6 month; 24 months recommended
 
 ### Certificate profile
 
@@ -50,7 +63,7 @@ All trust information is provided openly and freely without restrictions. Each P
 The Secretariat maintains a list of Participating Countries and the following information for each country:
 
 - URLs to downloadable certificate sets (DSC and CSCA certificates)
-- Information about how to authenticate certificates from each Country
+- Information about how to authenticate certificates from each Country . The recommended approach is the SHA 256 Fingerprint (industry standard, taken from the DER encoded file).
 
 This information can be downloaded and authenticated by other Participating Countries using the Secretariat's master URL and master key. This master key and master URL is the only information that is required to bootstrap trust in all HCERTs issued by all Participating Countries.
 
@@ -60,7 +73,7 @@ This information can be downloaded and authenticated by other Participating Coun
 This specification defines two supported formats for providing a list of certificates. DSC and CSCA certificates MUST be provided in separate lists made available using separate URLs. The two supported formats are:
 
 - A text document containing an unsigned list of PEM formatted certificates (ref)
-- A signed set of JSON web keys ([RFC7517](https://tools.ietf.org/html/rfc7517))
+- A signed set of JSON web keys ([RFC7517](https://tools.ietf.org/html/rfc7517)) in a single file as an array.
 
 All Issuing Countries MUST provide a list of PEM formatted certificates, and MAY provide a signed set of JWKs for each type of certificates they publish (DSC and CSCA certificates).
 
@@ -68,7 +81,7 @@ Each data format and each certificate type MUST be published through a separate 
 
 ### Data integrity and data origin authentication
 
-Basic data integrity and data origin authentication SHALL be provided by using TLS version 1.2, or higher, with strong cipher suites. The TLS certificate used by each Participating Country SHALL be provided by the Secretariat via the master URL.
+Basic data integrity and data origin authentication SHALL  shall meet or exceed SOGIS (https://www.sogis.eu) contemproary standards. And at the time of writing SHALL be provided by using TLS version 1.2, or higher, with strong cipher suites. The TLS certificate used by each Participating Country SHALL be provided by the Secretariat via the master URL. 
 
 The key used to verify any present signed set of JWKs SHALL be provided by the Secretariat via the master URL.
 
@@ -80,7 +93,7 @@ The Secretariat offers information about Participating Countries via the master 
 - URL for downloading a list of PEM formatted CSCA certificates
 - URL for downloading a signed set of JWKs containing DSCs (Optional)
 - URL for downloading a signed set of JWKs containing CSCA certificates (Optional)
-- TLS Certificate
+- TLS Certificate used on the origin server of above.
 - Certificate for verifying signed JWKs (Optional)
 
 The manner in which the Secretariat obtains this information from each Participating Country is outside the scope of this specification.
@@ -98,3 +111,8 @@ In cases where data is obtained using a signed set of JWKs, verifiers MAY ignore
 The infrastructure specified in this specification is expected to be a temporary solution and its design is focused on allowing Participant Countries to use the system with a minimum amount of efforts and development using currently available standard tools.
 
 One important design goal is therefore to adopt a design that allows this model to be migrated into almost any future model for trust exchange. By gradually moving from self-signed certificates towards a more layered model where each DCA is signed by a national CSCA, it is possible to merge this infrastructure with existing models for trust exchange such as a fully integrated ICAO model, integration with EU trusted list or other relevant models.
+
+# Normative Standard Bodies
+
+* SOGIS https://www.sogis.eu; at the time of writing _"SOG-IS Crypto Evaluation Scheme Agreed Cryptographic Mechanisms"_  version 1.2 of January 2020 (generally updates every 2 years) https://www.sogis.eu/documents/cc/crypto/SOGIS-Agreed-Cryptographic-Mechanisms-1.2.pdf
+
