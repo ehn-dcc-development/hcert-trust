@@ -1,6 +1,6 @@
 # Electronic Health Certificate Trust Exchange Specification
 
-Version 0.01-draft, 2021-04-14
+Version 0.0.1-draft, 2021-04-14
 
 
 ## Abstract
