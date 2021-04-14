@@ -78,7 +78,7 @@ In this option the Participating Country simply downloades the compiled list of 
 
 In this option the Participating Country decides to obtain from the Secretairat service the URL and authentication data used to download and authenticate certificates from other Participating Countries. As an alternative to this initial step the Participating countries MAY obtain this initial country info directly from the other Country which MAY be an option used to verify HCERT data from a country outside the list of countries covered by the Secretariat service.
 
-The Participating Countries the uses this country info data to continously aggregate trusted certificates.
+The Participating Countries then uses this country info data to continously aggregate trusted certificates through bilateral downloads.
 
 ### Data formats
 
