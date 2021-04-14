@@ -25,7 +25,18 @@ Versions of this specification follow [semantic versioning](semver.org) and cons
 
 In addition, there is an _edition_ version number used for publishing updates to the document itself which has no effect on the HCERT, such as correcting spelling, providing clarifications or addressing ambiguities, et cetera. Hence, the edition number is not indicated in the HCERT. The version numbers are expressed in the title page of the document using a _major.minor.edition_ format, where the three parts are separated by decimal dots.
 
-## Certificate trust model
+## Introduction
+
+The trust model for this specification is based on the ICOA MasterList concept with a number of key simplifications which are made possible (as in the WHO proposal) due to the use of a HCERT specific set of trusted certificates.
+
+There are two distinct areas of trust exchange in this trust model:
+
+   1. Those between Participant Country Issuers and validating countries that is the concern of this document and
+   2. Those between each validating country and the verifier applications that that country is using domestically.
+
+It is assumed that the latter relation is entirely up to the validating Participant Country to manage; and that there is no need for the verifier (if the country choose so) to take part in the inter-country trust management framework. Once a verifying Participant Country has compiled a list if issuers it is willing to trust - it can focus on just providing an up to date excerpt to their verifier apps.
+
+### Certificate trust model
 
 HCERTs are verified using a Document Signer Certificate (DSC) that holds the public key of the document signer that issued the HCERT. A DSC MAY be self issued or signed by a Certificate Signing Certificate Authority (CSCA).
 
@@ -33,7 +44,7 @@ Each Participating Country is REQUIRED to provide a list of valid Document Signi
 
 Each Participating Country MAY provide a list of one or more CSCA certificates used to sign certificates on the country DSC list. Participating countries and their verifiers MAY use the CSCA certificates as an instrument to validate certificates on the DSC list but MUST NOT require a DSC to be signed by a CSCA.
 
-### Certificate profile
+### Certificate profiles
 
 Requirements on certificate content of DSC and CSCA certificates are defined in the [Electronic Health Certificate (HCERT) Specification](https://github.com/ehn-digital-green-development/hcert-spec/blob/main/hcert_spec.md).
 
@@ -68,7 +79,7 @@ Each data format and each certificate type MUST be published through a separate 
 
 ### Data integrity and data origin authentication
 
-Basic data integrity and data origin authentication SHALL be provided by using TLS version 1.2, or higher, with strong cipher suites. The TLS certificate used by each Participating Country SHALL be provided by the Secretariat via the master URL.
+Basic data integrity and data origin authentication SHALL be provided by using TLS version 1.2, or higher, with strong cipher suites that meet or exceed SOGIS (https://www.sogis.eu) contemproary standards. The TLS certificate used by each Participating Country SHALL be provided by the Secretariat via the master URL.
 
 The key used to verify any present signed set of JWKs SHALL be provided by the Secretariat via the master URL.
 
@@ -80,7 +91,7 @@ The Secretariat offers information about Participating Countries via the master 
 - URL for downloading a list of PEM formatted CSCA certificates
 - URL for downloading a signed set of JWKs containing DSCs (Optional)
 - URL for downloading a signed set of JWKs containing CSCA certificates (Optional)
-- TLS Certificate
+- TLS Certificate used on the origin server of above.
 - Certificate for verifying signed JWKs (Optional)
 
 The manner in which the Secretariat obtains this information from each Participating Country is outside the scope of this specification.
@@ -98,3 +109,8 @@ In cases where data is obtained using a signed set of JWKs, verifiers MAY ignore
 The infrastructure specified in this specification is expected to be a temporary solution and its design is focused on allowing Participant Countries to use the system with a minimum amount of efforts and development using currently available standard tools.
 
 One important design goal is therefore to adopt a design that allows this model to be migrated into almost any future model for trust exchange. By gradually moving from self-signed certificates towards a more layered model where each DCA is signed by a national CSCA, it is possible to merge this infrastructure with existing models for trust exchange such as a fully integrated ICAO model, integration with EU trusted list or other relevant models.
+
+
+ ## Normative Standard Bodies
+
+ * SOGIS https://www.sogis.eu; at the time of writing _"SOG-IS Crypto Evaluation Scheme Agreed Cryptographic Mechanisms"_  version 1.2 of January 2020 (generally updates every 2 years) https://www.sogis.eu/documents/cc/crypto/SOGIS-Agreed-Cryptographic-Mechanisms-1.2.pdf
