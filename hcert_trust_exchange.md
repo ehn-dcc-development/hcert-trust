@@ -1,6 +1,6 @@
 # Electronic Health Certificate Trust Exchange Specification
 
-Version 0.01-draft, 2021-04-14
+Version 0.0.1 draft, 2021-04-14
 
 
 ## Abstract
@@ -11,7 +11,7 @@ This document specifies a basic service model and data exchange formats for a fi
 
 | version | status | Comments |
 |----------|----------|----------|
-| 0.01  | draft | first version |
+| 0.0.1  | draft | first version |
 
 ## Terminology
 
@@ -35,7 +35,7 @@ Each Participating Country MAY provide a list of one or more CSCA certificates u
 
 ### Certificate profile
 
-Requirements on certificate content of DSC and CSCA certificates are defined in the HCERT specification (ref).
+Requirements on certificate content of DSC and CSCA certificates are defined in the [Electronic Health Certificate (HCERT) Specification](https://github.com/ehn-digital-green-development/hcert-spec/blob/main/hcert_spec.md).
 
 ## Certificate exchange model
 
@@ -47,7 +47,7 @@ All trust information is provided openly and freely without restrictions. The Ve
 
 The Secretariat maintains a list of Participating Countries and the following information for each country:
 
-- URL:s to downloadable certificates (DSC and CSCA certificates)
+- URLs to downloadable certificates (DSC and CSCA certificates)
 - Information about how to authenticate certificates from each Country
 
 This information can be downloaded and authenticated by Verifying Countries using the Secretariat's master URL and master key. This master key and master URL is the only information that is required to bootstrap trust in all HCERTs issued by Issuing Countries.
@@ -62,7 +62,7 @@ This specification defines two supported formats for providing a list of certifi
 
 All Issuing Countries MUST provide a list of PEM formatted certificates, and MAY provide a signed set of JWKs for each type of certificates they publish (DSC and CSCA certificates).
 
-Each dataformat and each certificate type MUST be published through a separate URL.
+Each data format and each certificate type MUST be published through a separate URL.
 
 ### Data integrity and data origin authentication
 
