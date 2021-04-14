@@ -11,7 +11,7 @@ This document specifies a basic service model and data exchange formats for an i
 
 | version | status | Comments |
 |----------|----------|----------|
-| 0.01  | draft | first version |
+| 0.0.1  | draft | first version |
 
 ## Terminology
 
