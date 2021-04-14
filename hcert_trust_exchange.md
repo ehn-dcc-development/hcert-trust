@@ -35,7 +35,7 @@ Each Participating Country MAY provide a list of one or more CSCA certificates u
 
 ### Certificate profile
 
-Requirements on certificate content of DSC and CSCA certificates are defined in the HCERT specification ([Electronic Health Certificate (HCERT) Specification](https://github.com/ehn-digital-green-development/hcert-spec/blob/main/hcert_spec.md)).
+Requirements on certificate content of DSC and CSCA certificates are defined in the [Electronic Health Certificate (HCERT) Specification](https://github.com/ehn-digital-green-development/hcert-spec/blob/main/hcert_spec.md).
 
 ## Certificate exchange model
 
