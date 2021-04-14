@@ -45,7 +45,7 @@ DSC and CSCA certificates are exchanged between each Participating Country based
 
 All trust information is provided openly and freely without restrictions. Each Participating Country downloading certificates MUST have the means to validate and authenticate downloaded certificates, but the Participating Country providing the certificates MUST NOT require authentication of the downloading client.
 
-<img width="600" src="img/fig1.png">
+<img width="800" src="img/fig1.png">
 
 The Secretariat maintains a list of Participating Countries and the following information for each country:
 
