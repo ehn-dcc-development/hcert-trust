@@ -38,11 +38,11 @@ It is assumed that the latter relation is entirely up to the validating Particip
 
 ### Certificate trust model
 
-HCERTs are verified using a Document Signer Certificate (DSC) that holds the public key of the document signer that issued the HCERT. A DSC MAY be self issued or signed by a Certificate Signing Certificate Authority (CSCA).
+HCERTs are verified using a Document Signer Certificate (DSC) that holds the public key of the document signer that issued the HCERT. 
 
-Each Participating Country is REQUIRED to provide a list of valid Document Signing Certificates (DSCs), and keep these lists current. This list is called the DSC list. All public keys within certificates present on the DSC list is considered valid for validating signatures of HCERTs from that country, regardless of other information in the certificate or whether the DSC is self signed or signed by a CSCA.
+Each Participating Country is REQUIRED to provide a list of valid Document Signing Certificates (DSCs), and keep these lists current. This list is called the DSC list. All public keys within certificates present on the DSC list is considered valid for validating signatures of HCERTs from that country.
 
-Each Participating Country MAY provide a list of one or more CSCA certificates used to sign certificates on the country DSC list. Participating countries and their verifiers MAY use the CSCA certificates as an instrument to validate certificates on the DSC list but MUST NOT require a DSC to be signed by a CSCA.
+Each Participating Country MUST provide a list of one or more CSCA certificates used to sign certificates on the country DSC list. Participating countries and their verifiers MAY use the CSCA certificates as an instrument to validate certificates on the DSC list but MUST NOT require a DSC to be signed by a CSCA. They MAY use the DSC list directly.
 
 ### Certificate profiles
 
