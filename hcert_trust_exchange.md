@@ -47,7 +47,7 @@ All trust information is provided openly and freely without restrictions. Each P
 
 The Secretariat maintains a list of Participating Countries and the following information for each country:
 
-- URL:s to downloadable certificate sets (DSC and CSCA certificates)
+- URLs to downloadable certificate sets (DSC and CSCA certificates)
 - Information about how to authenticate certificates from each Country
 
 This information can be downloaded and authenticated by other Participating Countries using the Secretariat's master URL and master key. This master key and master URL is the only information that is required to bootstrap trust in all HCERTs issued by all Participating Countries.
