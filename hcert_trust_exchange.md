@@ -5,7 +5,7 @@ Version 0.01-draft, 2021-04-14
 
 ## Abstract
 
-This document specifies a basic service model and data exchange formats for a first infrastructurte for trust information exchange to support validation of electronic health certificates.
+This document specifies a basic service model and data exchange formats for a first infrastructure for trust information exchange to support validation of electronic health certificates.
 
 ### Version History
 
@@ -15,7 +15,7 @@ This document specifies a basic service model and data exchange formats for a fi
 
 ## Terminology
 
-Organisations adopting this specification for issuing health certificates are called Issuers and organisations accepting health certificates as proof of health status are called Verifiers. Together, these are called Participants. Issuers are registered under a country and Verifiers are assumed to be implemented withina country infrastructure. These countries are called Participant Countires, or just Countries. Some aspects in this document must be coordinated between the Participants and Participant Countries, such as the management of a namespace and the distribution of cryptographic keys. It is assumed that a party, hereafter referred to as the Secretariat, carries out these tasks. The health certificate format of this specification is called the Electronic Health Certificate, hereafter referred to as the HCERT.
+Organisations adopting this specification for issuing health certificates are called Issuers and organisations accepting health certificates as proof of health status are called Verifiers. Together, these are called Participants. Issuers are registered under a country and Verifiers are assumed to be implemented within a country infrastructure. These countries are called Participant Countries, or just Countries. Some aspects in this document must be coordinated between the Participants and Participant Countries, such as the management of a namespace and the distribution of cryptographic keys. It is assumed that a party, hereafter referred to as the Secretariat, carries out these tasks. The health certificate format of this specification is called the Electronic Health Certificate, hereafter referred to as the HCERT.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 ([RFC2119](https://tools.ietf.org/html/rfc2119), [RFC8174](https://tools.ietf.org/html/rfc8174)) when, and only when, they appear in all capitals, as shown here.
 
@@ -31,7 +31,7 @@ HCERTs are verified using a Document Signer Certificate (DSC) that holds the pub
 
 Each Participating Country is REQUIRED to provide a list of valid Document Signing Certificates (DSCs), and keep these lists current. This list is called the DSC list. All certificates present on the DSC list is considered valid for validating HCERTs from that country regardless of whether the DSC is self signed or signed by a CSCA.
 
-Each Participating Country MAY provide a list of one or more CSCA certificates used to sign certificates on the country DSC list. Participating countries and therir verifiers MAY use the CSCA certificates as an instrument to validate certificates on the DSC list but MUST NOT require a DSC to be signed by a CSCA.
+Each Participating Country MAY provide a list of one or more CSCA certificates used to sign certificates on the country DSC list. Participating countries and their verifiers MAY use the CSCA certificates as an instrument to validate certificates on the DSC list but MUST NOT require a DSC to be signed by a CSCA.
 
 ### Certificate profile
 
@@ -43,9 +43,9 @@ Requirements on certificate content of DSC and CSCA certificates are defined in 
 
 DSC and CSCA certificates are provided by each Issuing Country and downloaded by each Verifying Country based on information provided by the Secretariat.
 
-All trustinformation is provided openly and freely without restrictions. The Verifying Country downloading certificates MUST have the means to validate and authenticate downloaded certificates, but the Issuing country providing the certificates MUST NOT require authentication of the downloading client.
+All trust information is provided openly and freely without restrictions. The Verifying Country downloading certificates MUST have the means to validate and authenticate downloaded certificates, but the Issuing country providing the certificates MUST NOT require authentication of the downloading client.
 
-The Secretariate maintains a list of Participating Countries and the following information for each country:
+The Secretariat maintains a list of Participating Countries and the following information for each country:
 
 - URL:s to downloadable certificates (DSC and CSCA certificates)
 - Information about how to authenticate certificates from each Country
@@ -66,13 +66,13 @@ Each dataformat and each certificate type MUST be published through a separate U
 
 ### Data integrity and data origin authentication
 
-Basic data integrity and data origin authentication SHALL be provided by using TLS version 1.2 or higher. The TLS certificate used by each Issuing Country SHALL be provided by the Secretariate via the master URL.
+Basic data integrity and data origin authentication SHALL be provided by using TLS version 1.2 or higher. The TLS certificate used by each Issuing Country SHALL be provided by the Secretariat via the master URL.
 
-The key used to verify any present signed set of JWKs SHALL be provided by the Secretariate via the mater URL.
+The key used to verify any present signed set of JWKs SHALL be provided by the Secretariat via the mater URL.
 
-## Secretariate trust information exchange service
+## Secretariat trust information exchange service
 
-The Secretairate offers information about Participating Issuing Countries via the master URL. The following information is provided for each Country:
+The Secretariat offers information about Participating Issuing Countries via the master URL. The following information is provided for each Country:
 
 - URL for downloading a list of PEM formatted DSCs
 - URL for downloading a list of PEM formatted CSCA certificates
@@ -86,9 +86,9 @@ The manner in which the Secretariat obtains this information from each Issuing C
 
 ## Security considerations
 
-This specification builds on TLS as the baisc layer of protection with regard to the authenticity, integrity and freshness of data and to prevent data substitution and replay attacks.
+This specification builds on TLS as the basic layer of protection with regard to the authenticity, integrity and freshness of data and to prevent data substitution and replay attacks.
 
-In cases where data is obtained using signed set of JWKs, verifiers MAY ignore the TLS layer protection and rahter depend on protection on the message layer. For this reason, it is important that signed data is provided with issuing time information in order to prevent replay attacks where an adversary attempts to serve outdated trustinformation.
+In cases where data is obtained using signed set of JWKs, verifiers MAY ignore the TLS layer protection and rather depend on protection on the message layer. For this reason, it is important that signed data is provided with issuing time information in order to prevent replay attacks where an adversary attempts to serve outdated trust information.
 
 
 ### Future migration
