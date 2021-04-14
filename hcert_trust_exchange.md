@@ -42,7 +42,7 @@ HCERTs are verified using a Document Signer Certificate (DSC) that holds the pub
 
 Each Participating Country MUST provide a list of one or more CSCA certificates used to sign certificates on the country DSC list. Participating Countries and their verifiers MAY use the CSCA certificates as an instrument to validate certificates on the DSC list.
 
-Each Participating Country is MUST provide a list of valid Document Signing Certificates (DSCs), and keep this lists current. This list is called the DSC list. All public keys within certificates present on the DSC list is considered valid for validating signatures of HCERTs from that country.
+Each Participating Country MUST provide a list of valid Document Signing Certificates (DSCs), and keep this lists current. This list is called the DSC list. All public keys within certificates present on the DSC list is considered valid for validating signatures of HCERTs from that country.
 
 
 ### Certificate profiles
