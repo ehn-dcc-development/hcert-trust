@@ -1,6 +1,6 @@
-# Electronic Health Certificate Trust Exchange Specification
+# Simple Electronic Health Certificate Trust Exchange Specification
 
-Version 0.0.1-draft, 2021-04-15
+Version 1.0.0-draft, 2021-04-15
 
 
 ## Abstract
@@ -11,11 +11,11 @@ This document specifies a basic service model and data exchange formats for an i
 
 | version | status | Comments |
 |----------|----------|----------|
-| 0.0.1  | draft | first version |
+| 1.0.0-draft  | draft | first version |
 
 ## Terminology
 
-Organisations adopting this specification for issuing health certificates are called Issuers and organisations accepting health certificates as proof of health status are called Verifiers. Together, these are called Participants. Issuers are registered under a country and Verifiers are assumed to be operating within a country infrastructure, relying on a national Trust Point for retrieving the information necessary to validate the authenticity of HCERTs issued by other countries. The national Trust Points are operated by a competent appointed authority of that country. Countries operating together to form this infrastructure of trust are called Member States. Some aspects in this document must be coordinated between the Member States, such as the management of a namespace and the distribution of cryptographic keys. It is assumed that a function, hereafter referred to as the Secretariat, carries out these tasks.
+Organisations adopting this specification for issuing health certificates are called `Issuers` and organisations accepting health certificates as proof of health status are called `Verifiers`. Together, these are called `Participants`. `Issuers` are registered under a country and `Verifiers` are assumed to be operating within a country infrastructure, relying on a national `Trust Point` for retrieving the information necessary to validate the authenticity of `HCERT`s issued by other countries. The national `Trust Points` are operated by a competent appointed authority of that country. Countries operating together to form this infrastructure of trust are called `Member States`. Some aspects in this document must be coordinated between the `Member States`, such as the management of a namespace and the distribution of cryptographic keys. It is assumed that a function, hereafter referred to as the `Secretariat`, carries out these tasks. The health certificate container format (`HCERT`) referred to in this specification is generic, but in this context used to carry the European Digital Green Certificate (`DGC`).
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 ([RFC2119](https://tools.ietf.org/html/rfc2119), [RFC8174](https://tools.ietf.org/html/rfc8174)) when, and only when, they appear in all capitals, as shown here.
 
@@ -40,9 +40,11 @@ It is assumed that the latter relation is entirely up to the Member State in whi
 
 HCERTs are verified using a Document Signer Certificate (DSC) that holds the public key of the document signer that issued the HCERT. A DSC is always signed by a Certificate Signing Certificate Authority (CSCA).
 
-Each Member State MUST provide a list of one or more CSCA certificates used to sign certificates on that Member State's DSC list.
+This simplified model does not provide any automated distribution of CSCA certificates from Member States. Distribution of CSCA certificates from Member States to the Secretairat is considered part of the bootstrapping process that must be solved by out-of-band means outside the scope of this specification.
 
-Each Member State MUST also provide a list of all valid Document Signing Certificates (DSCs), and keep this list current. This list is called the DSC list. All public keys within certificates present on the DSC list is considered valid for validating signatures of HCERTs from that Member State. Other Member States MAY use the list of CSCA certificates as an instrument to validate the certificates on the DSC list before accepting these DSCs for publication in the Trust Point.
+Each Member State MUST provide one or more CSCA certificates used to sign certificates on that Member State's DSC list. Member States SHOULD limit the number of CSCA to a minimum to reduce the burden of manual exchange of CSCA certificates as stated above.
+
+Each Member State MUST provide a list of all valid Document Signing Certificates (DSCs), and keep this list current. This list is called the DSC list. All public keys within certificates present on the DSC list is considered valid for validating signatures of HCERTs from that Member State as long as they are not revoked by the CSCA.
 
 ### Certificate profiles
 
@@ -54,9 +56,9 @@ Requirements on certificate content of DSC and CSCA certificates are defined in 
 
 The Secretariat maintains a list of Member States and the following information for each national Trust Point:
 
-- URLs to the downloadable certificate sets (DSC and CSCA certificates)
+- URLs to the downloadable Document Signer Certificate sets (DCS)
 - Information about how to authenticate the Trust Point and the downloaded certificates
-- A current aggregated list of CSCA certificates
+- A current list of valid CSCA certificates
 - A current aggregated list of verified DSC certificates
 
 This information can be downloaded and authenticated by other Member States using the Secretariat's master URL and master key. This master key and master URL is the only information that is required to bootstrap trust in all HCERTs issued by all Member States.
@@ -75,20 +77,18 @@ In this option the Member State simply downloads the compiled list of DSCs and o
 
 <img width="700" src="img/fig1.png">
 
-In this option the Member State obtains from the Secretairat service the URLs and authentication data used to download and authenticate certificates from other Member States directly. As an alternative to this initial step, the Member State MAY also obtain the information related to the foreign Trust Point directly from the other Member State. This pattern MAY be considered an option for a Member State to extend trust bilaterally to other countries which are not Member States.
+In this option the Member State obtains from the Secretairat service the aggregated CSCA certificates, URLs and authentication data used to download and authenticate DCS certificates from other Member States directly. As an alternative to this initial step, the Member State MAY also obtain the information related to the foreign Trust Point directly from the other Member State. This pattern MAY be considered an option for a Member State to extend trust bilaterally to other countries which are not Member States.
 
-The Member State then uses the verified Trust Point data to continously aggregate trusted certificates through direct bilateral downloads.
+The Member State then uses the verified Trust Point data to continously aggregate and validate trusted certificates through direct bilateral downloads.
 
 ### Data formats
 
-This specification defines two supported formats for providing a list of certificates. DSC and CSCA certificates MUST be provided in separate lists made available using separate URLs. The two supported formats are:
+This specification defines two supported formats for providing a list of DSC certificates. The two supported formats are:
 
 - A text document containing an unsigned list of concatenated PEM formatted certificates (ref)
 - A signed set of JSON web keys ([RFC7517](https://tools.ietf.org/html/rfc7517))
 
-All Issuing Countries MUST provide a list of PEM formatted certificates, and MAY provide a signed set of JWKs for each type of certificates they publish (DSC and CSCA certificates).
-
-Each data format and each certificate type MUST be published through a separate URL.
+All Issuing Countries MUST provide a list of PEM formatted certificates, and MAY provide a signed set of JWKs.
 
 ### Data integrity and data origin authentication
 
@@ -101,12 +101,10 @@ The key used to verify any present signed set of JWKs SHALL be provided by the S
 The Secretariat offers information about Member State's Trust Points via the master URL. The following information is provided for each Country:
 
 - URL for downloading a list of PEM formatted DSCs
-- URL for downloading a list of PEM formatted CSCA certificates
 - URL for downloading a signed set of JWKs containing DSCs (Optional)
-- URL for downloading a signed set of JWKs containing CSCA certificates (Optional)
 - TLS Certificate used on the origin server of above.
 - Certificate for verifying signed JWKs (Optional)
-- Current valid list of aggregated CSCA Certificates
+- Current valid list valid CSCA Certificates
 - Current valid list of aggregated and validated DSC
 
 The manner in which the Secretariat bootstrap initial URLs and certificates used to download and authenticate information from each Member State is outside the scope of this specification.
@@ -115,6 +113,8 @@ The manner in which the Secretariat bootstrap initial URLs and certificates used
 ## Security considerations
 
 This specification relies on Transport Layer Security (TLS) as the fundamental layer of protection with regard to the authenticity, integrity and accuracy of data and to prevent data substitution and replay attacks.
+
+Since all DSC certificates are validated and checked for revocation by the receiving Trust Point (or Secretariat) the attack surface is limited. The risk mainly relates to situations where the CSCA has issued certificates to multipple entities, where only some of these certificates are valid for HCERT verification. In this casse it is of great importance to assure that the list is complete. Validating Trust Points MUST NOT assume and depend on that the CSCA only issues certicicates to valid document signers.
 
 In cases where data is obtained using a signed set of JWKs, verifiers MAY ignore the TLS protection and rather depend on protection on the message layer. For this reason, it is important that signed data is provided with time of issue in order to prevent replay attacks where an adversary attempts to serve outdated trust information.
 
