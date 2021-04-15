@@ -40,9 +40,9 @@ It is assumed that the latter relation is entirely up to the Member State in whi
 
 HCERTs are verified using a Document Signer Certificate (DSC) that holds the public key of the document signer that issued the HCERT. A DSC is always signed by a Certificate Signing Certificate Authority (CSCA).
 
-This simplified model does not provide any automated distribution of CSCA certificates from member states. Distribution of CSCA certificates from member states to the Secretairat is considered part of the boostrapping process that must be solved by Out-Of-Band means out side the scope of this specification.
+This simplified model does not provide any automated distribution of CSCA certificates from Member States. Distribution of CSCA certificates from Member States to the Secretairat is considered part of the bootstrapping process that must be solved by out-of-band means outside the scope of this specification.
 
-Each Member State MUST provide one or more CSCA certificates used to sign certificates on that Member State's DSC list. Member states SHOULD limit the number of CSCA to a minimum to reduce the burden of manual exchange of CSCA certificates as stated above.
+Each Member State MUST provide one or more CSCA certificates used to sign certificates on that Member State's DSC list. Member States SHOULD limit the number of CSCA to a minimum to reduce the burden of manual exchange of CSCA certificates as stated above.
 
 Each Member State MUST provide a list of all valid Document Signing Certificates (DSCs), and keep this list current. This list is called the DSC list. All public keys within certificates present on the DSC list is considered valid for validating signatures of HCERTs from that Member State as long as they are not revoked by the CSCA.
 
